@@ -8,7 +8,6 @@ Swiss::Swiss(const int numRounds, const PlayerList& list){
     this->curRound = 0;
     this->list = list;
     this->list.sort();
-    printLeaderboard();
 }
 
 Swiss::~Swiss(){
@@ -16,5 +15,8 @@ Swiss::~Swiss(){
 }
 
 void Swiss::play(){
+    for(int i = 0 ; i < numRounds; i++){
+        
+    }
     return ;
 }

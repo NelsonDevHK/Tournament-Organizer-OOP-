@@ -7,8 +7,6 @@ Player:: Player(const char* const name, const int elo){
     strcpy(this->name,name);
     this->elo = elo;
     this->score = 0;
-    cout << this->name <<endl;
-    cout << this->elo << endl;
 }
 
 Player::~Player(){
@@ -33,12 +31,13 @@ PlayerList::~PlayerList(){
 
 void PlayerList::addPlayer(Player* const player){ //Error
     if(numPlayers == 0){
-    players = new Player*[numPlayers];
+    players = new Player*[numPlayers + 1];
     players[numPlayers++] = player;
     }else{ // resize the dynamic array with copy data
-        Player** temp = new Player*[numPlayers];
-        for(int i = 0 ; i < numPlayers ; i++)
+        Player** temp = new Player*[numPlayers + 1];
+        for(int i = 0 ; i < numPlayers ; i++){
             temp[i] = players[i];
+        }
         delete []players;
         temp[numPlayers++] = player;
         players = temp;
@@ -46,11 +45,15 @@ void PlayerList::addPlayer(Player* const player){ //Error
 }
 void PlayerList::sort(){
     for(int i = 0 ; i < numPlayers; i++){
-        for(int j = 0 ; j < numPlayers - i ; j++){
-            if(players[i]->getScore() <= players[j+1]->getScore()){
-                if(players[i]->getELO() <= players[j+1]->getELO())
-            swap(players[i],players[j+1]);
-            }
+        for(int j = 0 ; j < numPlayers - i - 1 ; j++){
+            if(players[j]->getELO() < players[j+1]->getELO())
+                swap(players[j],players[j+1]);
+        }
+    }
+    for(int i = 0 ; i < numPlayers; i++){
+        for(int j = 0 ; j < numPlayers - i - 1 ; j++){
+            if(players[j]->getScore() < players[j+1]->getScore())
+                swap(players[j],players[j+1]);
         }
     }
 }
