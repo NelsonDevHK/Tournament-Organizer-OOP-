@@ -3,10 +3,12 @@
 using namespace std;
 //Task One
 Player:: Player(const char* const name, const int elo){
-    this->name = new char[strlen(name +1)];
+    this->name = new char[strlen(name + 1)];
     strcpy(this->name,name);
     this->elo = elo;
     this->score = 0;
+    cout << this->name;
+    cout << this->elo;
 }
 
 Player::~Player(){
@@ -29,7 +31,7 @@ PlayerList::~PlayerList(){
     this->players = nullptr;
 }
 
-void PlayerList::addPlayer(Player* const player){
+void PlayerList::addPlayer(Player* const player){ //Erro
     this->players[numPlayers++] = player;
 }
 void PlayerList::sort(){
@@ -43,7 +45,7 @@ void PlayerList::sort(){
     }
 }
 PlayerList* PlayerList:: splice(const int startIndex, const int endIndex) const{
-    if(startIndex < 0 || endIndex > this->numPlayers - 1){
+    if(startIndex < 0 || endIndex > getNumPlayers() || startIndex >= endIndex){
         PlayerList* newList = new PlayerList(*this);
         return newList;
     }
