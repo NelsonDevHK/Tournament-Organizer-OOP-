@@ -57,15 +57,43 @@ void PlayerList::sort(){
         }
     }
 }
-PlayerList* PlayerList:: splice(const int startIndex, const int endIndex) const{
-    if(startIndex < 0 || endIndex > getNumPlayers() || startIndex >= endIndex){
-        PlayerList* newList = new PlayerList(*this);
-        return newList;
+// PlayerList* PlayerList:: splice(const int startIndex, const int endIndex) const{
+//     if(startIndex < 0 || endIndex > getNumPlayers() || startIndex >= endIndex){
+//         PlayerList* newList = new PlayerList(*this);
+//         return newList;
+//     }
+//     else{
+//         PlayerList* newList = new PlayerList;
+//         for(int i = startIndex; i < endIndex ; i++){
+//             newList->addPlayer(this->players[i]);
+//         }
+//     }
+// }
+PlayerList *PlayerList::splice(const int startIndex, const int endIndex) const
+{
+    // for invalid case
+    if (startIndex < 0){
+        PlayerList* invalid = new PlayerList();
+        return invalid;
     }
-    else{
-        PlayerList* newList = new PlayerList;
-        for(int i = startIndex; i <= endIndex ; i++){
-            newList->addPlayer(this->players[i]);
+    else if(endIndex > numPlayers){
+        PlayerList* invalid = new PlayerList();
+        return invalid;
+    }
+    else if(startIndex >= endIndex){
+        PlayerList* invalid = new PlayerList();
+        return invalid;
+    }
+    // for valid case
+    else if (startIndex < endIndex){
+        PlayerList* temp = new PlayerList;
+        temp->numPlayers = endIndex - startIndex + 1;
+        temp->players = new Player*[numPlayers];
+        
+        for (int x = startIndex, index = 0; x <= endIndex; x++, index++){
+            temp->players[index] = this->players[x];
         }
+        
+        return temp;
     }
 }
