@@ -18,9 +18,12 @@ PlayerList::PlayerList(){
     this->players = nullptr;
 }
 PlayerList::PlayerList(const PlayerList& list){
+    numPlayers = list.numPlayers;
+    players = new Player*[numPlayers];
     for(int i = 0 ; i < numPlayers ; i++)
         players[i] = list.getPlayer(i);
 }
+
 PlayerList::~PlayerList(){
     for(int i = 0 ; i < numPlayers; i++){
         if (players[i] != nullptr) {
@@ -33,20 +36,20 @@ PlayerList::~PlayerList(){
 }
 
 
-void PlayerList::addPlayer(Player* const player){ //Error
+void PlayerList::addPlayer(Player* const player){
     if(numPlayers == 0){
-    players = new Player*[numPlayers + 1];
-    players[numPlayers++] = player;
+        players = new Player*[1];
     }else{ // resize the dynamic array with copy data
         Player** temp = new Player*[numPlayers + 1];
         for(int i = 0 ; i < numPlayers ; i++){
             temp[i] = players[i];
         }
         delete []players;
-        temp[numPlayers++] = player;
         players = temp;
     }
+    players[numPlayers++] = player;
 }
+
 void PlayerList::sort(){
     for(int i = 0 ; i < numPlayers; i++){
         for(int j = 0 ; j < numPlayers - i - 1 ; j++){
@@ -62,19 +65,19 @@ void PlayerList::sort(){
     }
 }
 
-PlayerList* PlayerList::splice(const int startIndex, const int endIndex) const
-{
-    if (startIndex < 0 
-        || endIndex > numPlayers
-        || startIndex >= endIndex) {
+PlayerList* PlayerList::splice(const int startIndex, const int endIndex) const {
+    if (startIndex < 0 || endIndex > numPlayers || startIndex >= endIndex) {
         PlayerList* defaultList = new PlayerList();
         return defaultList;
     }
+
     PlayerList* temp = new PlayerList();
     temp->numPlayers = endIndex - startIndex + 1;
     temp->players = new Player*[temp->numPlayers];
+
     for (int i = startIndex, index = 0; i <= endIndex; i++, index++) {
         temp->players[index] = this->players[i];
     }
+
     return temp;
 }
