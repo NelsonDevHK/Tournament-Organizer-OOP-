@@ -76,7 +76,7 @@ void Swiss::play()
             }
             list.sort();
             printLeaderboard();
-            delete[] list_AllScore;
         }
     }
+    //delete[] list_AllScore;
 }
