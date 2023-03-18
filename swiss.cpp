@@ -25,6 +25,8 @@ void Swiss::play()
     PlayerList *list_AllScore = new PlayerList[(numRounds * 2) - 1];
     for (curRound = 1; curRound <= numRounds; curRound++)
     {
+
+        int playCount = 0;
         int possibleScore = 2 * curRound - 1;
         if (possibleScore == 1)
         {
@@ -37,6 +39,12 @@ void Swiss::play()
                 Player *p2 = list_AllScore[0].getPlayer(middleIndex + j);
                 Match m(p1, p2);
                 m.play();
+                playCount++;
+            }
+            if (list.getNumPlayers() % 2 != 0 && playCount == list.getNumPlayers() / 2)
+            {
+                list.sort();
+                list.getPlayer(list.getNumPlayers() - 1)->addScore(2);
             }
             list.sort();
             printLeaderboard();
@@ -55,7 +63,7 @@ void Swiss::play()
                 int score = list.getPlayer(i)->getScore();
                 if (i + 1 < list.getNumPlayers() && list.getPlayer(i)->getScore() != list.getPlayer(i + 1)->getScore() && i % 2 == 0)
                 {
-                    list_AllScore[score - 1].addPlayer(list.getPlayer(i));
+                    list_AllScore[list.getPlayer(i + 1)->getScore()].addPlayer(list.getPlayer(i));
                     continue;
                 }
                 list_AllScore[score].addPlayer(list.getPlayer(i));
@@ -72,11 +80,18 @@ void Swiss::play()
                     Player *p2 = list_AllScore[i].getPlayer(middleIndex + j);
                     Match m(p1, p2);
                     m.play();
+                    playCount++;
+                    cout << playCount << endl;
                 }
+            }
+            if (list.getNumPlayers() % 2 != 0 && playCount == list.getNumPlayers() / 2)
+            {
+                list.sort();
+                list.getPlayer(list.getNumPlayers() - 1)->addScore(2);
             }
             list.sort();
             printLeaderboard();
         }
     }
-    //delete[] list_AllScore;
+    delete[] list_AllScore;
 }
