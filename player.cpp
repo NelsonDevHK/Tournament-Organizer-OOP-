@@ -3,7 +3,7 @@
 using namespace std;
 //Task One
 Player:: Player(const char* const name, const int elo){
-    this->name = new char[strlen(name + 1)];
+    this->name = new char[strlen(name) + 1];
     strcpy(this->name,name);
     this->elo = elo;
     this->score = 0;
@@ -23,11 +23,15 @@ PlayerList::PlayerList(const PlayerList& list){
 }
 PlayerList::~PlayerList(){
     for(int i = 0 ; i < numPlayers; i++){
-        delete players[i];
+        if (players[i] != nullptr) {
+            delete players[i];
+            players[i] = nullptr;
+        }
     }
     delete []players;
-    this->players = nullptr;
+    players = nullptr;
 }
+
 
 void PlayerList::addPlayer(Player* const player){ //Error
     if(numPlayers == 0){
@@ -57,43 +61,20 @@ void PlayerList::sort(){
         }
     }
 }
-// PlayerList* PlayerList:: splice(const int startIndex, const int endIndex) const{
-//     if(startIndex < 0 || endIndex > getNumPlayers() || startIndex >= endIndex){
-//         PlayerList* newList = new PlayerList(*this);
-//         return newList;
-//     }
-//     else{
-//         PlayerList* newList = new PlayerList;
-//         for(int i = startIndex; i < endIndex ; i++){
-//             newList->addPlayer(this->players[i]);
-//         }
-//     }
-// }
-PlayerList *PlayerList::splice(const int startIndex, const int endIndex) const
+
+PlayerList* PlayerList::splice(const int startIndex, const int endIndex) const
 {
-    // for invalid case
-    if (startIndex < 0){
-        PlayerList* invalid = new PlayerList();
-        return invalid;
+    if (startIndex < 0 
+        || endIndex > numPlayers
+        || startIndex >= endIndex) {
+        PlayerList* defaultList = new PlayerList();
+        return defaultList;
     }
-    else if(endIndex > numPlayers){
-        PlayerList* invalid = new PlayerList();
-        return invalid;
+    PlayerList* temp = new PlayerList();
+    temp->numPlayers = endIndex - startIndex + 1;
+    temp->players = new Player*[temp->numPlayers];
+    for (int i = startIndex, index = 0; i <= endIndex; i++, index++) {
+        temp->players[index] = this->players[i];
     }
-    else if(startIndex >= endIndex){
-        PlayerList* invalid = new PlayerList();
-        return invalid;
-    }
-    // for valid case
-    else if (startIndex < endIndex){
-        PlayerList* temp = new PlayerList;
-        temp->numPlayers = endIndex - startIndex + 1;
-        temp->players = new Player*[numPlayers];
-        
-        for (int x = startIndex, index = 0; x <= endIndex; x++, index++){
-            temp->players[index] = this->players[x];
-        }
-        
-        return temp;
-    }
+    return temp;
 }
