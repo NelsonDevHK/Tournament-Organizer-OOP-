@@ -15,10 +15,7 @@ Swiss::Swiss(const int numRounds, const PlayerList &list)
 Swiss::~Swiss()
 {
 }
-void Swiss::print()
-{
-    cout << "Here" << endl;
-}
+
 void Swiss::play()
 { // recursive function
     // Create array of list that contain all possible score

@@ -13,7 +13,6 @@ class Swiss {
         // TASK 4: Implement the conversion constructor and destructor
         Swiss(const int numRounds, const PlayerList& list);
         ~Swiss();
-        void print();
         // TASK 5: Implement the function to conduct the Swiss tournament
         void play();
 
