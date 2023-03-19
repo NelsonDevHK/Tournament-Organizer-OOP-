@@ -19,36 +19,31 @@ PlayerList::PlayerList(){
     this->players = nullptr;
 }
 PlayerList::PlayerList(const PlayerList& list){
-    numPlayers = list.numPlayers;
+    numPlayers = list.getNumPlayers();
     players = new Player*[numPlayers];
     for(int i = 0 ; i < numPlayers ; i++)
-        players[i] = list.getPlayer(i);
+        players[i] = list.players[i];
 }
 
 PlayerList::~PlayerList(){
-    for(int i = 0 ; i < numPlayers; i++){
-        if (players[i] != nullptr) {
-            delete players[i];
-            players[i] = nullptr;
-        }
-    }
     delete []players;
-    players = nullptr;
 }
 
 
 void PlayerList::addPlayer(Player* const player){
-    if(numPlayers == 0){
-        players = new Player*[1];
-    }else{ // resize the dynamic array with copy data
-        Player** temp = new Player*[numPlayers + 1];
-        for(int i = 0 ; i < numPlayers ; i++){
-            temp[i] = players[i];
-        }
-        delete []players;
-        players = temp;
+    numPlayers += 1;
+
+    Player **temp;
+    temp = new Player *[numPlayers];
+
+    for (int x = 0; x < numPlayers - 1; x++)
+    { // define the content of each element inside players array
+        temp[x] = this->players[x];
     }
-    players[numPlayers++] = player;
+    temp[numPlayers - 1] = player; // add new point to the last element
+
+    delete[] players;
+    players = temp;
 }
 
 void PlayerList::sort(){

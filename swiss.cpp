@@ -1,19 +1,19 @@
-#include <iostream>
-#include "swiss.h"
+#include "player.h"
 #include "match.h"
-using namespace std;
+#include "swiss.h"
 
-// Task 4
-Swiss::Swiss(const int numRounds, const PlayerList &list)
-{
+#include <iostream>
+#include <cstring>
+
+// TASK 4: Implement the constructor and destructor
+Swiss::Swiss(const int numRounds, const PlayerList& list): list(list){
+    curRound = 0;
     this->numRounds = numRounds;
-    this->curRound = 0;
-    this->list = list;
     this->list.sort();
 }
 
-Swiss::~Swiss()
-{
+Swiss::~Swiss(){
+    
 }
 
 void Swiss::play()
@@ -22,7 +22,6 @@ void Swiss::play()
     PlayerList *list_AllScore = new PlayerList[(numRounds * 2) - 1];
     for (curRound = 1; curRound <= numRounds; curRound++)
     {
-
         int playCount = 0;
         int possibleScore = 2 * curRound - 1;
         if (possibleScore == 1)
@@ -78,7 +77,6 @@ void Swiss::play()
                     Match m(p1, p2);
                     m.play();
                     playCount++;
-                    cout << playCount << endl;
                 }
             }
             if (list.getNumPlayers() % 2 != 0 && playCount == list.getNumPlayers() / 2)
