@@ -17,9 +17,9 @@ Swiss::~Swiss(){
 }
 
 void Swiss::play()
-{ // recursive function
-    // Create array of list that contain all possible score
+{
     PlayerList *list_AllScore = new PlayerList[(numRounds * 2) - 1];
+    // Create array of list that contain all possible score
     for (curRound = 1; curRound <= numRounds; curRound++)
     {
         int playCount = 0;
@@ -51,8 +51,10 @@ void Swiss::play()
             list.sort();
             for (int i = possibleScore; i >= 0; i--)
             {
-                if (list_AllScore[i].getNumPlayers() > 0)
+                if (list_AllScore[i].getNumPlayers() > 0){
+                    list_AllScore[i].~PlayerList();
                     list_AllScore[i] = (*list_AllScore[i].splice(-1, 0));
+                }
             }
             for (int i = 0; i < list.getNumPlayers(); i++)
             {

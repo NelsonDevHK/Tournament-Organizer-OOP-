@@ -31,16 +31,18 @@ PlayerList::~PlayerList(){
 
 
 void PlayerList::addPlayer(Player* const player){
-    numPlayers += 1;
+    Player **temp = new Player *[numPlayers + 1];
 
-    Player **temp;
-    temp = new Player *[numPlayers];
-
-    for (int x = 0; x < numPlayers - 1; x++)
-    { // define the content of each element inside players array
+    int x = 0;
+    while(x < numPlayers)
+    {
         temp[x] = this->players[x];
+        x++;
     }
-    temp[numPlayers - 1] = player; // add new point to the last element
+
+    temp[numPlayers] = player;
+
+    numPlayers += 1;
 
     delete[] players;
     players = temp;
@@ -71,8 +73,8 @@ PlayerList* PlayerList::splice(const int startIndex, const int endIndex) const {
     temp->numPlayers = endIndex - startIndex + 1;
     temp->players = new Player*[temp->numPlayers];
 
-    for (int i = startIndex, index = 0; i <= endIndex; i++, index++) {
-        temp->players[index] = this->players[i];
+    for (int i = 0 ; i <= temp->numPlayers ; i++) {
+        temp->players[i] = this->players[i + startIndex];
     }
 
     return temp;
